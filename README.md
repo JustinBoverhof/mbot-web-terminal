@@ -1,4 +1,7 @@
 # Mbot Web Terminal Concept
+made with the help of chatgpt and this post:
+https://stackoverflow.com/questions/38689707/connecting-to-remote-ssh-server-via-node-js-html5-console
+
 this is meant to illustrate an idea for an addition to the mbot web services 
 
 Web development is not my specialty and I do not claim to know what all of this code does
@@ -9,6 +12,3 @@ I am not sure how useful this would actually be as a feature but i think the con
 
 ## Dependancies 
 npm and these npm packages: express socket.io ssh2 xterm xterm-addon-fit
-
-made with the help of chatgpt and this post:
-https://stackoverflow.com/questions/38689707/connecting-to-remote-ssh-server-via-node-js-html5-console
