@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/xterm.css" />
+  <script src="/xterm.js"></script>
+  <script src="/xterm-addon-fit.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    /* Add your custom styles here */
+  </style>
+</head>
+<body>
+  <h2>SSH Terminal</h2>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" />
+    <button id="connect">Connect</button>
+  </div>
+  <div id="terminal"></div>
+
+  <script>
+    const socket = io();
+    const terminalDiv = document.getElementById('terminal');
+
+    const term = new Terminal();
+    term.open(terminalDiv);
+    const fitAddon = new FitAddon.FitAddon();
+    term.loadAddon(fitAddon);
+    fitAddon.fit();
+
+    document.getElementById('connect').onclick = function() {
+      const password = document.getElementById('password').value;
+
+      socket.emit('connectSSH', password);
+    };
+
+    socket.on('data', function(data) {
+      term.write(data);
+    });
+
+    term.onData(data => {
+      socket.emit('data', data);
+    });
+  </script>
+</body>
+</html>
