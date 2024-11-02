@@ -7,6 +7,8 @@ the main idea behind this was to provide a terminal for those not at their usual
 
 I am not sure how useful this would actually be as a feature but i think the concept is at least cool in practice.
 
+## Dependancies 
+npm and these npm packages: express socket.io ssh2 xterm xterm-addon-fit
 
 made with the help of chatgpt and this post:
 https://stackoverflow.com/questions/38689707/connecting-to-remote-ssh-server-via-node-js-html5-console
