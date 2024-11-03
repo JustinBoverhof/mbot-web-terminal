@@ -1,22 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mbot SSH Terminal</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="/images/icon.png"/>
+  
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="/xterm.css" />
+  
+  <!-- Xterm and Socket.io Scripts -->
   <script src="/xterm.js"></script>
   <script src="/xterm-addon-fit.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+  
   <style>
-    /* Add your custom styles here */
+    body {
+      line-height: 1.6;
+      font-size: 20px;
+      color: #444;
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: midnightblue;
+      transition: background-color 0.24s;
+    }
+
+    h1 {
+      line-height: 1.2;
+      text-align: center;
+      margin-top: 20px;
+      color: white;
+      background-color: midnightblue;
+    }
+
+    #terminal {
+      height: 400px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      background-color: gray;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: background-color 0.5s;
+      margin-top: 10px; /* Add margin for spacing */
+    }
+
+    .btn-primary:hover {
+      background-color: #D86018;
+    }
+
+    .form-group {
+      margin: 20px 0;
+      color: white;
+      background-color: midnightblue;
+    }
   </style>
 </head>
 <body>
-  <h2>Mbot SSH Terminal</h2>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" />
-    <button id="connect">Connect</button>
+  <div class="container mt-4">
+    <h1>Mbot SSH Terminal</h1>
+    <div class="form-group" style="display: flex; align-items: center;">
+      <label for="password" style="margin-right: 10px;">Password:</label>
+      <input type="password" id="password" class="form-control" placeholder="Enter your password" style="width: 200px; margin-right: 10px;" />
+      <button id="connect" class="btn btn-primary"><b>Connect</b></button>
+    </div>
+    <div id="terminal" class="border rounded"></div>
+    
   </div>
-  <div id="terminal"></div>
 
   <script>
     const socket = io();
@@ -30,9 +90,17 @@
 
     document.getElementById('connect').onclick = function() {
       const password = document.getElementById('password').value;
-
       socket.emit('connectSSH', password);
+      moveToTerminal();
     };
+
+    document.getElementById('password').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        const password = this.value;
+        socket.emit('connectSSH', password);
+        moveToTerminal();
+      }
+    });
 
     socket.on('data', function(data) {
       term.write(data);
@@ -41,6 +109,13 @@
     term.onData(data => {
       socket.emit('data', data);
     });
+
+    function moveToTerminal() {
+      term.focus();
+    }
+
+    // Resize terminal on window resize
+    window.addEventListener('resize', () => fitAddon.fit());
   </script>
 </body>
 </html>
