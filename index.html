@@ -76,6 +76,11 @@
     </div>
     <div id="terminal" class="border rounded"></div>
     
+    <!-- Ctrl+C Button -->
+    <!-- <button id="ctrlC" class="btn btn-primary"><b>Send Ctrl+C</b></button> -->
+
+    <!-- Autocomplete Button -->
+    <!-- <button id="autocomplete" class="btn btn-primary"><b>Autocomplete</b></button> -->
   </div>
 
   <script>
@@ -110,8 +115,22 @@
       socket.emit('data', data);
     });
 
+    // // Ctrl+C Button Logic
+    // document.getElementById('ctrlC').onclick = function() {
+    //   moveToTerminal();
+    //   term.write('\x03'); // Send Ctrl+C (ASCII code 3)
+    //   process.kill()
+    // };
+
+    // // Autocomplete Button Logic
+    // document.getElementById('autocomplete').onclick = function() {
+    //   moveToTerminal();
+    //   term.write('\t'); // Send Tab character for autocomplete
+    //   socket.emit('\t')
+    // };
+
     function moveToTerminal() {
-      term.focus();
+      term.focus(); // Ensure the terminal is focused
     }
 
     // Resize terminal on window resize
