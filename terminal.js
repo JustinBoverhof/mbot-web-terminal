@@ -8,17 +8,22 @@ const io = require('socket.io')(http, {
 });
 const SSHClient = require('ssh2').Client;
 
-app.set('view engine', 'ejs');
+
+// Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: false, limit: '150mb' }));
+
+// Serve static files from the public directory
 app.use(express.static(__dirname + '/public'));
 app.use('/xterm.css', express.static(require.resolve('xterm/css/xterm.css')));
 app.use('/xterm.js', express.static(require.resolve('xterm')));
 app.use('/xterm-addon-fit.js', express.static(require.resolve('xterm-addon-fit')));
 
+// Serve index.html from the root directory
 app.get('/terminal', (req, res) => {
-  res.render('index'); // Ensure you have an index.ejs file to render the terminal
+  res.sendFile(__dirname + '/index.html'); 
 });
 
+// Socket.io connection
 io.on('connection', function(socket) {
   let conn = new SSHClient();
 
